@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block titulo %}Formulário de Anamnese Padrão - Triagem Médica{% endblock %}
+
+{% block conteudo %}
+<div class="cartao">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+            <h1 class="cartao-titulo">Anamnese Geral e Triagem de Sintomas</h1>
+            <p class="cartao-subtitulo">
+                Preencha as informações abaixo com atenção. Este protocolo padronizado avalia o seu quadro clínico e determina a urgência de atendimento.
+            </p>
+        </div>
+        <span class="badge-risco" style="background-color: var(--cor-cartao-secundario); color: var(--cor-texto-principal); border: 1px solid var(--cor-borda);">
+            Protocolo Padronizado
+        </span>
+    </div>
+
+    {% if not usuario %}
+        <div class="alerta-mensagem alerta-erro">
+            <span>⚠️ <strong>Atenção:</strong> Você não está conectado a uma conta. Para salvar esta anamnese no seu histórico permanente, <a href="/#secao-login" style="color: inherit; text-decoration: underline; font-weight: bold;">faça login ou cadastre-se aqui</a>.</span>
+        </div>
+    {% endif %}
+
+    <div id="mensagem-erro-anamnese" class="alerta-mensagem alerta-erro oculto"></div>
+
+    <form id="formulario-anamnese">
+        <!-- 1. Identificação Básica -->
+        <h2 style="font-size: 1.15rem; color: var(--cor-texto-principal); margin: 1.5rem 0 1rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.4rem;">
+            1. Dados da Pessoa Avaliada
+        </h2>
+        <div class="campo-grade">
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="nome_paciente">Nome Completo</label>
+                <input type="text" id="nome_paciente" class="campo-texto" placeholder="Nome do paciente" value="{{ usuario.nome if usuario else '' }}" required>
+            </div>
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="idade">Idade (anos)</label>
+                <input type="number" id="idade" class="campo-texto" min="0" max="130" placeholder="Ex: 35" required>
+            </div>
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="sexo">Sexo Biológico</label>
+                <select id="sexo" class="campo-select" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 2. Sintoma Principal e Duração -->
+        <h2 style="font-size: 1.15rem; color: var(--cor-texto-principal); margin: 2rem 0 1rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.4rem;">
+            2. Queixa Principal e Início
+        </h2>
+        <div class="campo-grade">
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="sintoma_principal">Qual é o sintoma ou desconforto principal?</label>
+                <select id="sintoma_principal" class="campo-select" required>
+                    <option value="" disabled selected>Selecione o sintoma principal...</option>
+                    <option value="dor_peito">Dor ou aperto no peito / tórax</option>
+                    <option value="falta_ar">Falta de ar ou cansaço respiratório</option>
+                    <option value="febre">Febre ou calafrios</option>
+                    <option value="dor_cabeca">Dor de cabeça intensa ou contínua</option>
+                    <option value="dor_abdominal">Dor na barriga / abdômen</option>
+                    <option value="tosse">Tosse frequente ou persistente</option>
+                    <option value="diarreia_vomito">Náusea, vômito ou diarreia</option>
+                    <option value="tontura_fraqueza">Tontura, vertigem ou fraqueza súbita</option>
+                    <option value="dor_garganta">Dor de garganta</option>
+                    <option value="dor_lombar">Dor lombar / nas costas</option>
+                    <option value="outro">Outro desconforto</option>
+                </select>
+            </div>
+
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="tempo_evolucao">Há quanto tempo você sente isso?</label>
+                <select id="tempo_evolucao" class="campo-select" required>
+                    <option value="" disabled selected>Selecione o tempo de evolução...</option>
+                    <option value="poucas_horas">Começou há poucas horas (início súbito)</option>
+                    <option value="1_a_2_dias">Entre 1 e 2 dias</option>
+                    <option value="3_a_7_dias">Entre 3 e 7 dias</option>
+                    <option value="mais_1_semana">Há mais de 1 semana</option>
+                    <option value="mais_1_mes">Há mais de 1 mês (crônico)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 3. Escala de Intensidade de Dor / Desconforto -->
+        <h2 style="font-size: 1.15rem; color: var(--cor-texto-principal); margin: 2rem 0 1rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.4rem;">
+            3. Intensidade da Dor / Desconforto (Escala de 0 a 10)
+        </h2>
+        <div class="controle-dor">
+            <p style="font-size: 0.9rem; color: var(--cor-texto-secundario); margin-bottom: 0.75rem;">
+                Arraste o cursor abaixo indicando o nível do incômodo (0 = Sem dor nenhuma, 10 = A pior dor imaginável):
+            </p>
+            <input type="range" id="intensidade_dor" min="0" max="10" value="3" step="1">
+            <div class="valor-dor-destaque">
+                Nível: <span id="valor-dor">3</span> / 10
+            </div>
+            <div class="escala-dor-indicador">
+                <span>0 (Sem dor)</span>
+                <span>3 (Leve)</span>
+                <span>6 (Moderada)</span>
+                <span>10 (Intensa / Insuportável)</span>
+            </div>
+        </div>
+
+        <!-- 4. Sinais de Alerta Críticos (Red Flags) -->
+        <h2 style="font-size: 1.15rem; color: #DC2626; margin: 2rem 0 0.5rem; border-bottom: 2px solid #FCA5A5; padding-bottom: 0.4rem;">
+            🚨 4. Sinais de Alerta Imediatos (Marque todos os que você estiver sentindo)
+        </h2>
+        <p style="font-size: 0.85rem; color: var(--cor-texto-suave); margin-bottom: 1rem;">
+            A presença de qualquer um desses itens indica prioridade máxima de atendimento de emergência:
+        </p>
+        <div class="grade-opcoes">
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="dor_peito_irradiada">
+                <div>
+                    <strong>Dor no peito com irradiação</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Dor forte apertando o peito e indo para braço esquerdo, costas ou queixo.</p>
+                </div>
+            </label>
+
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="falta_ar_grave">
+                <div>
+                    <strong>Falta de ar intensa</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Dificuldade extrema para respirar ou lábios azulados.</p>
+                </div>
+            </label>
+
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="confusao_desmaio">
+                <div>
+                    <strong>Desmaio ou confusão mental</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Perda de sentidos, desmaio recente ou desorientação súbita.</p>
+                </div>
+            </label>
+
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="paralisia_fala">
+                <div>
+                    <strong>Fraqueza em um lado do corpo</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Boca torta, fraqueza no braço ou dificuldade súbita para falar.</p>
+                </div>
+            </label>
+
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="sangramento_grave">
+                <div>
+                    <strong>Sangramento volumoso</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Vômito com sangue, evacuação de fezes pretas tipo borra ou hemorragia.</p>
+                </div>
+            </label>
+
+            <label class="opcao-caixa alerta-grave">
+                <input type="checkbox" name="sinais_alerta" value="febre_convulsao_rigidez">
+                <div>
+                    <strong>Febre com rigidez ou convulsão</strong>
+                    <p style="font-size: 0.8rem; color: #64748B;">Febre alta com pescoço rígido (dor para encostar queixo no peito) ou convulsão.</p>
+                </div>
+            </label>
+        </div>
+
+        <!-- 5. Sintomas Secundários Associados -->
+        <h2 style="font-size: 1.15rem; color: var(--cor-texto-principal); margin: 2rem 0 1rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.4rem;">
+            5. Outros Sintomas Associados
+        </h2>
+        <div class="grade-opcoes">
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="coriza">
+                <span>Coriza ou congestão nasal</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="dores_corpo">
+                <span>Dores pelo corpo ou musculares</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="sudorese">
+                <span>Suor frio ou excessivo</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="sensibilidade_luz">
+                <span>Sensibilidade à luz (fotofobia)</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="palpitacoes">
+                <span>Palpitações ou coração acelerado</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="visao_turva">
+                <span>Visão turva ou embaçada</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="perda_apetite">
+                <span>Perda de apetite acentuada</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="sintomas_associados" value="inchaco_pernas">
+                <span>Inchaço nas pernas ou tornozelos</span>
+            </label>
+        </div>
+
+        <!-- 6. Histórico de Doenças e Comorbidades -->
+        <h2 style="font-size: 1.15rem; color: var(--cor-texto-principal); margin: 2rem 0 1rem; border-bottom: 2px solid var(--cor-borda); padding-bottom: 0.4rem;">
+            6. Histórico de Saúde e Comorbidades
+        </h2>
+        <div class="grade-opcoes" style="margin-bottom: 1.5rem;">
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="hipertensao">
+                <span>Pressão alta (Hipertensão)</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="diabetes">
+                <span>Diabetes</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="cardiopatia">
+                <span>Problemas no coração</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="asma_dpoc">
+                <span>Asma ou bronquite crônica</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="doenca_renal">
+                <span>Doença renal crônica</span>
+            </label>
+            <label class="opcao-caixa">
+                <input type="checkbox" name="comorbidades" value="imunossuprimido">
+                <span>Imunidade baixa / Tratamento oncológico</span>
+            </label>
+        </div>
+
+        <div class="campo-grade">
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="medicamentos">Medicamentos em uso contínuo (opcional)</label>
+                <input type="text" id="medicamentos" class="campo-texto" placeholder="Ex: Losartana 50mg, Insulina...">
+            </div>
+            <div class="grupo-formulario">
+                <label class="rotulo-campo" for="alergias">Alergias conhecidas (opcional)</label>
+                <input type="text" id="alergias" class="campo-texto" placeholder="Ex: Penicilina, Dipirona, Nenhuma...">
+            </div>
+        </div>
+
+        <!-- Botão de Submissão -->
+        <div style="margin-top: 2rem; border-top: 1px solid var(--cor-borda); padding-top: 1.5rem; text-align: center;">
+            <button type="submit" id="botao-submeter-anamnese" class="botao botao-primario" style="font-size: 1.1rem; padding: 0.9rem 2.5rem;">
+                🩺 Concluir e Analisar Sintomas
+            </button>
+            <p style="font-size: 0.8rem; color: var(--cor-texto-suave); margin-top: 0.75rem;">
+                Processamento instantâneo via motor de triagem clínica em conformidade com as regras do sistema.
+            </p>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="/static/js/anamnese.js"></script>
+{% endblock %}

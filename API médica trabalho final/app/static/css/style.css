@@ -1,0 +1,510 @@
+/* ==========================================================================
+   Estilo Global - API Médica de Anamnese e Triagem
+   Paleta: Cores frias, maioria branco, cinza e bege. Botões arredondados.
+   ========================================================================== */
+
+:root {
+    /* Cores principais (Paleta Bege Marcante e Acolhedora) */
+    --cor-fundo: #E5DAC9;             /* Bege nítido de fundo */
+    --cor-cartao: #EFE6D5;            /* Bege visível para cartões e cabeçalho */
+    --cor-cartao-secundario: #DDCFBA; /* Bege complementar mais escuro */
+    --cor-borda: #C4B59D;             /* Bege areia definido para bordas */
+    --cor-texto-principal: #1E293B;   /* Cinza chumbo escuro */
+    --cor-texto-secundario: #475569;  /* Cinza médio */
+    --cor-texto-suave: #64748B;       /* Cinza suave */
+    
+    /* Tom frio de destaque clínico */
+    --cor-primaria: #2563EB;          /* Azul clínico frio */
+    --cor-primaria-hover: #1D4ED8;
+    --cor-primaria-suave: #D8CAB2;
+
+    /* Classificações de risco com fundo em harmonia bege */
+    --cor-risco-leve: #15803D;        /* Verde suave */
+    --cor-risco-leve-fundo: #DFEAD8;
+    --cor-risco-moderado: #B45309;    /* Âmbar moderado */
+    --cor-risco-moderado-fundo: #F2E3C6;
+    --cor-risco-grave: #B91C1C;       /* Vermelho alerta */
+    --cor-risco-grave-fundo: #F2D2D2;
+
+    /* Bordas arredondadas (RNF04) */
+    --borda-arredondada-sm: 8px;
+    --borda-arredondada-md: 14px;
+    --borda-arredondada-lg: 20px;
+    --borda-arredondada-botao: 24px;
+    --sombra-card: 0 4px 14px rgba(70, 55, 35, 0.10), 0 1px 4px rgba(70, 55, 35, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho de Navegação */
+.cabecalho-principal {
+    background-color: var(--cor-cartao);
+    border-bottom: 1px solid var(--cor-borda);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.cabecalho-conteudo {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--cor-texto-principal);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.logo-icone {
+    background-color: var(--cor-primaria-suave);
+    color: var(--cor-primaria);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--borda-arredondada-sm);
+    font-size: 1.4rem;
+}
+
+.menu-navegacao {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: var(--cor-texto-secundario);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--borda-arredondada-botao);
+    transition: all 0.2s ease;
+}
+
+.menu-link:hover {
+    color: var(--cor-primaria);
+    background-color: var(--cor-primaria-suave);
+}
+
+.info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--cor-cartao-secundario);
+    padding: 0.4rem 1rem;
+    border-radius: var(--borda-arredondada-botao);
+    border: 1px solid var(--cor-borda);
+    font-size: 0.9rem;
+}
+
+/* Container Principal */
+.conteudo-principal {
+    flex: 1;
+    max-width: 1000px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* Botões Arredondados (RNF04) */
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.6rem;
+    border-radius: var(--borda-arredondada-botao);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.botao-primario {
+    background-color: var(--cor-primaria);
+    color: #FAF8F5;
+}
+
+.botao-primario:hover {
+    background-color: var(--cor-primaria-hover);
+    transform: translateY(-1px);
+}
+
+.botao-secundario {
+    background-color: var(--cor-cartao);
+    color: var(--cor-texto-principal);
+    border-color: var(--cor-borda);
+}
+
+.botao-secundario:hover {
+    background-color: var(--cor-cartao-secundario);
+    border-color: #B5A489;
+}
+
+.botao-perigo {
+    background-color: var(--cor-risco-grave);
+    color: #FAF8F5;
+}
+
+.botao-perigo:hover {
+    background-color: #B91C1C;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.botao-bloco {
+    width: 100%;
+}
+
+/* Cartões e Seções */
+.cartao {
+    background-color: var(--cor-cartao);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-arredondada-lg);
+    padding: 2rem;
+    box-shadow: var(--sombra-card);
+    margin-bottom: 2rem;
+}
+
+.cartao-titulo {
+    font-size: 1.4rem;
+    color: var(--cor-texto-principal);
+    margin-bottom: 0.5rem;
+}
+
+.cartao-subtitulo {
+    color: var(--cor-texto-suave);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Formulários */
+.grupo-formulario {
+    margin-bottom: 1.25rem;
+}
+
+.rotulo-campo {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--cor-texto-principal);
+}
+
+.campo-texto,
+.campo-select,
+.campo-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-arredondada-md);
+    background-color: #F3EBDD;
+    color: var(--cor-texto-principal);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo-texto:focus,
+.campo-select:focus,
+.campo-textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.campo-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+/* Checkboxes estilizados em botões/pílulas */
+.grade-opcoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.75rem;
+}
+
+.opcao-caixa {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background-color: var(--cor-cartao-secundario);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-arredondada-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.opcao-caixa:hover {
+    border-color: #B5A489;
+    background-color: var(--cor-cartao);
+}
+
+.opcao-caixa input[type="checkbox"] {
+    margin-top: 0.25rem;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--cor-primaria);
+    cursor: pointer;
+}
+
+.opcao-caixa.alerta-grave {
+    border-left: 4px solid var(--cor-risco-grave);
+    background-color: var(--cor-risco-grave-fundo);
+}
+
+/* Escala de Dor (Slider) */
+.controle-dor {
+    background-color: var(--cor-cartao-secundario);
+    padding: 1.5rem;
+    border-radius: var(--borda-arredondada-md);
+    border: 1px solid var(--cor-borda);
+}
+
+.escala-dor-indicador {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+    margin-top: 0.5rem;
+}
+
+.valor-dor-destaque {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--cor-primaria);
+    cursor: pointer;
+}
+
+/* Mensagens de Alerta */
+.alerta-mensagem {
+    padding: 1rem 1.25rem;
+    border-radius: var(--borda-arredondada-md);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alerta-erro {
+    background-color: #FEF2F2;
+    border: 1px solid #FCA5A5;
+    color: #991B1B;
+}
+
+.alerta-sucesso {
+    background-color: #F0FDF4;
+    border: 1px solid #86EFAC;
+    color: #166534;
+}
+
+/* Badge de Risco */
+.badge-risco {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 1rem;
+    border-radius: var(--borda-arredondada-botao);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.badge-risco.verde {
+    background-color: var(--cor-risco-leve-fundo);
+    color: var(--cor-risco-leve);
+    border: 1px solid #86EFAC;
+}
+
+.badge-risco.amarelo {
+    background-color: var(--cor-risco-moderado-fundo);
+    color: var(--cor-risco-moderado);
+    border: 1px solid #FCD34D;
+}
+
+.badge-risco.vermelho {
+    background-color: var(--cor-risco-grave-fundo);
+    color: var(--cor-risco-grave);
+    border: 1px solid #FCA5A5;
+}
+
+/* Cartão de Resultado da Triagem */
+.resultado-cabecalho {
+    border-radius: var(--borda-arredondada-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 2px solid;
+}
+
+.resultado-cabecalho.verde {
+    background-color: var(--cor-risco-leve-fundo);
+    border-color: #86EFAC;
+}
+
+.resultado-cabecalho.amarelo {
+    background-color: var(--cor-risco-moderado-fundo);
+    border-color: #FCD34D;
+}
+
+.resultado-cabecalho.vermelho {
+    background-color: var(--cor-risco-grave-fundo);
+    border-color: #FCA5A5;
+}
+
+.urgencia-card {
+    background-color: var(--cor-cartao);
+    border: 2px solid var(--cor-risco-grave);
+    border-radius: var(--borda-arredondada-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.urgencia-telefones {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+}
+
+.telefone-item {
+    background-color: var(--cor-cartao-secundario);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--borda-arredondada-md);
+    border: 1px solid var(--cor-borda);
+    display: flex;
+    flex-direction: column;
+}
+
+.telefone-numero {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cor-risco-grave);
+}
+
+/* Lista de Orientações Personalizadas */
+.lista-orientacoes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item-orientacao {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--cor-cartao-secundario);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--borda-arredondada-md);
+    font-size: 0.95rem;
+}
+
+.icone-orientacao {
+    font-size: 1.25rem;
+}
+
+/* Histórico de Anamneses */
+.tabela-historico {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.tabela-historico th,
+.tabela-historico td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela-historico th {
+    background-color: var(--cor-cartao-secundario);
+    color: var(--cor-texto-secundario);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.tabela-historico tr:hover {
+    background-color: var(--cor-cartao-secundario);
+}
+
+/* Rodapé */
+.rodape-principal {
+    background-color: var(--cor-cartao);
+    border-top: 1px solid var(--cor-borda);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    color: var(--cor-texto-suave);
+    font-size: 0.85rem;
+    margin-top: auto;
+}
+
+/* Utilitários */
+.oculto {
+    display: none !important;
+}
+
+.texto-centro {
+    text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cabecalho-conteudo {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    .menu-navegacao {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .conteudo-principal {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+    .cartao {
+        padding: 1.25rem;
+    }
+}

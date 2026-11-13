@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block titulo %}Histórico de Anamneses - Triagem Médica{% endblock %}
+
+{% block conteudo %}
+<div class="cartao">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1 class="cartao-titulo">Minhas Anamneses e Triagens</h1>
+            <p class="cartao-subtitulo">Consulte o histórico de todas as avaliações registradas em sua conta.</p>
+        </div>
+        <a href="/anamnese" class="botao botao-primario">
+            + Nova Anamnese
+        </a>
+    </div>
+
+    {% if not usuario %}
+        <div class="alerta-mensagem alerta-erro">
+            <span>🔒 <strong>Acesso Restrito:</strong> Você precisa estar logado para consultar suas anamneses anteriores. <a href="/#secao-login" style="color: inherit; text-decoration: underline; font-weight: bold;">Clique aqui para entrar</a>.</span>
+        </div>
+    {% else %}
+        <div id="historico-carregando" style="text-align: center; padding: 2rem; color: var(--cor-texto-suave);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏳</div>
+            Buscando suas consultas anteriores...
+        </div>
+
+        <div id="historico-vazio" class="oculto texto-centro" style="padding: 3rem 1rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📑</div>
+            <h2 class="cartao-titulo" style="font-size: 1.3rem;">Nenhuma anamnese registrada ainda</h2>
+            <p class="cartao-subtitulo">Você ainda não realizou nenhuma triagem em sua conta.</p>
+            <a href="/anamnese" class="botao botao-primario" style="margin-top: 1rem;">Fazer Minha Primeira Anamnese</a>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="tabela-historico">
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>Paciente</th>
+                        <th>Sintoma Principal</th>
+                        <th>Classificação de Risco</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-historico-corpo"></tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="/static/js/historico.js"></script>
+{% endblock %}

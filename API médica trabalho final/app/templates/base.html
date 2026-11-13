@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Triagem Médica e Anamnese{% endblock %}</title>
+    <!-- Estilo CSS Puro (RNF03, RNF04, RNF05) -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block cabecalho_extra %}{% endblock %}
+</head>
+<body>
+    <header class="cabecalho-principal">
+        <div class="cabecalho-conteudo">
+            <a href="/" class="logo-link">
+                <span class="logo-icone">🩺</span>
+                <span>Triagem Médica</span>
+            </a>
+
+            <nav class="menu-navegacao">
+                <a href="/" class="menu-link">Início</a>
+                <a href="/anamnese" class="menu-link">Nova Anamnese</a>
+                <a href="/historico" class="menu-link">Minhas Anamneses</a>
+
+                {% if usuario %}
+                    <div class="info-usuario">
+                        <span>👤 {{ usuario.nome }}</span>
+                        <a href="#" id="botao-logout" class="menu-link" style="padding: 0.2rem 0.5rem; font-size: 0.85rem; color: #DC2626;">Sair</a>
+                    </div>
+                {% else %}
+                    <a href="/#secao-login" class="botao botao-primario" style="padding: 0.45rem 1.2rem; font-size: 0.9rem;">Entrar</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo-principal">
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer class="rodape-principal">
+        <p><strong>Aviso Importante:</strong> Esta ferramenta de triagem simplificada fornece orientações preliminares de encaminhamento e NÃO substitui o diagnóstico ou a consulta clínica presencial com um médico devidamente registrado.</p>
+        <p style="margin-top: 0.5rem;">© 2026 Sistema de Anamnese e Triagem Médica Digital - 100% em Português</p>
+    </footer>
+
+    <!-- Scripts JavaScript Nativos (Vanilla JS) -->
+    <script src="/static/js/app.js"></script>
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>
