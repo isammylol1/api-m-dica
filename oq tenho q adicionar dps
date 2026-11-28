@@ -1,0 +1,56 @@
+"""models""
+from dataclass import dataclass
+
+@dataclass
+class Paciente:
+    id: int
+    nome: str
+    email: str
+    def consultar_historico() -> list:
+        ...
+
+
+
+@dataclass
+class RespostaAnamnese:
+    id: int
+    paciente_id: int
+    anamnese_id: int
+    def processar_correlacao() -> list:
+        ...
+
+
+"""database_models.py"""
+class Base(Base):
+    pass
+
+class Paciente(Base):
+    __tablename__ = "Paciente"
+    id = mapped_column(Integer, primary_key=True)
+    nome = mapped_column(String(50), nullable=False)
+    email = mapped_column(String(50), unique=True)
+    respostas = relationship("RespostaAnamnese", back_populates="paciente")
+
+class RespostaAnamnese(Base):
+    __tablename__ = "RespostaAnamnese"
+    id = mapped_column(Integer, primary_key=True)
+    paciente_id = mapped_column(Integer, ForeignKey("Paciente.id"), nullable=False)
+    anamnese_id = mapped_column(Integer, nullable=False)
+    paciente = relationship("Paciente", back_populates="respostas")
+
+"""routes.py"""
+
+app = FastAPI()
+
+
+@app.post('/pacientes')
+def criar_paciente(paciente: Paciente) -> Schema:
+    ...
+
+@app.get('/pacientes')
+def obter_pacientes() -> list[Paciente]:
+    ...
+
+@app.get('/pacientes/{id}')
+def obter_dados_pacientes(id: int):
+    ...
